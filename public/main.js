@@ -1,22 +1,35 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
-var trash = document.getElementsByClassName("fa-trash");
+const trash = document.getElementsByClassName("fa-trash-o");
+const heart = document.getElementsByClassName("fa-heart");
+const heartOutline = document.getElementsByClassName("fa-heart-o");
 
-Array.from(thumbUp).forEach(function(element) {
+
+
+
+document.getElementById("search").addEventListener("input", (element) => {
+  const searchInput = element.target.value.toLowerCase();
+  document.querySelectorAll(".recipe").forEach((recipe) => {
+    recipe.style.display = recipe.textContent.toLowerCase().includes(searchInput) ? "" : "none";
+});
+
+});
+
+
+
+Array.from(heart).forEach(function(element) {
       element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('messages', {
+        const li = this.closest('li');
+        const id = li.dataset.id;
+        fetch('/recipes/' + id, {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
+            'favorite': false
           })
         })
         .then(response => {
-          if (response.ok) return response.json()
+          if (response.ok) 
+            return response.json()
+
         })
         .then(data => {
           console.log(data)
@@ -25,20 +38,38 @@ Array.from(thumbUp).forEach(function(element) {
       });
 });
 
+Array.from(heartOutline).forEach(function(element) {
+      element.addEventListener('click', function(){
+        const li = this.closest('li');
+        const id = li.dataset.id;
+        fetch('/recipes/' + id, {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            'favorite': true
+          })
+        })
+        .then(response => {
+          if (response.ok) 
+            return response.json()
+
+        })
+        .then(data => {
+          console.log(data)
+          window.location.reload(true)
+        })
+      });
+});
+
+
+
 Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        fetch('messages', {
-          method: 'delete',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg
-          })
-        }).then(function (response) {
+        const li = this.closest('li');
+        const id = li.dataset.id;
+        fetch('/recipes/' + id, {
+          method: 'delete'})
+          .then(function (response) {
           window.location.reload()
         })
       });

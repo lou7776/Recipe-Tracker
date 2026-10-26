@@ -1,29 +1,30 @@
 <!doctype html>
 <html>
 <head>
-    <title>21 Savage Fan Site</title>
+    <title>Recipe Storage</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div class="container">
-
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+<body> 
+ <header class="site-header">
+        <h1><span class="fa fa-cutlery"></span> Recipes</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+    </header>
 
-    <div class="row">
+    <div class="container">
+
+        <input id="search" type="text" placeholder="Search recipes...">
+    <!-- <div class="row"> -->
 
         <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
+        <!-- <div class="col-sm-6">
             <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
+                <h3><span class="fa fa-cutlery"></span> Local</h3>
 
                 <% if (user.local.email) { %>
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
+                         <strong>id</strong>: <%= user._id %><br> 
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
                     </p>
@@ -34,33 +35,57 @@
                 <% } %>
 
             </div>
-        </div>
-        <div class="col-sm-6">
-          <h3>Messages</h3>
-          <ul class="messages">
-          <% for(var i=0; i<messages.length; i++) {%>
-            <li class="message">
-              <span><%= messages[i].name %></span>
-              <span><%= messages[i].msg %></span>
-              <span><%= messages[i].thumbUp %></span>
-              <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-              <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+        </div> -->
+    <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+    <h2>Add a Recipe</h2>
+          <form action="/recipes" method="POST">
+            <input type="text" placeholder="Recipe Title" name="title">
+            <input type="text" placeholder="URL" name="url">
+            <textarea placeholder="Description" name="description" rows="2"></textarea>
+            <textarea placeholder="Ingredients" name="ingredients" rows="4"></textarea>
+            <textarea placeholder="Instructions" name="instructions" rows="6"></textarea>
+            <button type="submit">Submit</button>
+          </form>
+        
+    
+       
+       
+          <h3>Recipes Box</h3>
+          <ul class="recipe-box">
+          <% for(var i=0; i<recipes.length; i++) {%>
+            <li class="recipe" data-id="<%= recipes[i]._id %>">
+                <h4><%= recipes[i].title %></h4>
+              
+                <% if (recipes[i].url) { %>
+                <p><a href="<%= recipes[i].url %>" target="_blank">View Recipe</a></p>
+              <% } %>
+
+                <% if (recipes[i].ingredients || recipes[i].instructions) { %>
+                    <details>
+                        <summary>Details</summary>
+                        <% if (recipes[i].description) { %>
+                            <p><strong>Description:</strong> <%= recipes[i].description %></p>
+                        <% } %>
+                       <% if (recipes[i].ingredients) { %>
+                            <p><strong>Ingredients:</strong> <%= recipes[i].ingredients %></p>
+                        <% } %>
+                       <% if (recipes[i].instructions) { %>
+                            <p><strong>Instructions:</strong> <%= recipes[i].instructions %></p>
+                        <% } %>
+                    </details>
+                <% } %>      
+                <div class ="recipe-favs">      
+              <span><i class="fa <%= recipes[i].favorite ? 'fa-heart' : 'fa-heart-o' %>" aria-hidden="true"></i></span>
+              <span><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+                </div>
             </li>
           <% } %>
           </ul>
-
-          <h2>Add a message</h2>
-        <% if (user.local.email) { %>
-          <form action="/messages" method="POST">
-            <input type="text" value="<%= user.local.email %>" name="name">
-            <input type="text" placeholder="message" name="msg">
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-        <% } %>
-
+          </div>
+    </div>
 </div>
+        
 
 <script src="main.js"></script>
 
