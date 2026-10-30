@@ -2,6 +2,10 @@
 
 A personal recipe box where each person signs up, logs in, and keeps their own private collection of recipes. Save a link to a recipe you found online, or type in your own ingredients and instructions, then favorite, search, and delete recipes as you go.
 
+
+<img width="1399" height="733" alt="Screenshot 2026-10-29 at 11 12 30 PM" src="https://github.com/user-attachments/assets/c65b4421-1138-4512-a5b2-76cf0715157b" />
+
+
 **Live demo:** https://recipe-tracker-x0zo.onrender.com
 
 ## Features
